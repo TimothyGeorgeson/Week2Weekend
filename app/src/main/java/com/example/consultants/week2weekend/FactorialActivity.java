@@ -1,6 +1,8 @@
 package com.example.consultants.week2weekend;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -152,6 +154,17 @@ public class FactorialActivity extends AppCompatActivity implements NavigationVi
                 //This is like AsyncTask's doInBackground() method
                 int output = factorial(Integer.parseInt(etFact.getText().toString()));
                 tvResult.setText(Integer.toString(output));
+
+                //saving highest factorial output to sharedpreferences within loader
+                SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
+
+                int highestFact = sharedPref.getInt("FactMax", 0);
+                if(output > highestFact)
+                {
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putInt("FactMax", output);
+                    editor.commit();
+                }
 
                 return null;
             }
