@@ -15,20 +15,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FactorialActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class FibonacciActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar myToolbar;
-    EditText etFact;
+    EditText etFib;
     TextView tvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_factorial);
-        etFact = findViewById(R.id.etFact);
+        setContentView(R.layout.activity_fibonacci);
+        etFib = findViewById(R.id.etFib);
         tvResult = findViewById(R.id.tvResult);
+
         drawerLayout = findViewById(R.id.navDrawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -40,8 +41,8 @@ public class FactorialActivity extends AppCompatActivity implements NavigationVi
         drawerToggle.syncState();
     }
 
-    public void calcFactorial(View view) {
-        String input = etFact.getText().toString();
+    public void calcFibonacci(View view) {
+        String input = etFib.getText().toString();
         boolean containsNonInt = false;
         for (int i = 0; i < input.length(); i++) {
             if (!Character.isDigit(input.charAt(i)))
@@ -56,18 +57,17 @@ public class FactorialActivity extends AppCompatActivity implements NavigationVi
         }
         else
         {
-            int output = factorial(Integer.parseInt(input));
+            int output = fibonacci(Integer.parseInt(input));
             tvResult.setText(Integer.toString(output));
         }
 
     }
 
-    static int factorial(int n)
+    static int fibonacci(int n)
     {
-        if (n == 0)
-            return 1;
-
-        return n*factorial(n-1);
+        if (n <= 1)
+            return n;
+        return fibonacci(n-1) + fibonacci(n-2);
     }
 
     @Override

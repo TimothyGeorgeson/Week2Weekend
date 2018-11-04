@@ -54,17 +54,16 @@ public class MusicActivity extends AppCompatActivity implements NavigationView.O
             case R.id.itemBack:
                 finish();
             case R.id.itemSkip:
-
                 this.finish();
                 break;
             case R.id.itemReport:
                 Toast.makeText(this, "Report", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.itemFact:
-
+                startActivity(new Intent(this, FactorialActivity.class));
                 break;
             case R.id.itemFib:
-
+                startActivity(new Intent(this, FibonacciActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -81,7 +80,7 @@ public class MusicActivity extends AppCompatActivity implements NavigationView.O
                 startActivity(intent);
                 break;
             case R.id.quiz:
-                Toast.makeText(this, "This is settings", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "This is quiz", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.music:
                 intent = new Intent(getApplicationContext(), MusicActivity.class);
