@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--overflow menu items, not shown in action bar-->
+    <item
+        android:id="@+id/itemFact"
+        android:title="Factorial"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/itemFib"
+        android:title="Fibonacci"
+        app:showAsAction="never" />
+
+    <!--menu items that are visible in action bar-->
+
+    <item
+        android:id="@+id/itemSkip"
+        android:icon="@drawable/skip"
+        android:title="Skip"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/itemReport"
+        android:icon="@drawable/report"
+        android:title="Report"
+        app:showAsAction="always" />
+
+</menu>
