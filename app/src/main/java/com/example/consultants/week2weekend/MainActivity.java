@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.home:
                 this.finish();
                 return true;
-            case R.id.itemSkip:
-                Toast.makeText(this, "Skipped", Toast.LENGTH_SHORT).show();
-                break;
+            case R.id.itemBack:
+                finish();
+                return true;
             case R.id.itemReport:
                 Toast.makeText(this, "Report", Toast.LENGTH_SHORT).show();
                 break;

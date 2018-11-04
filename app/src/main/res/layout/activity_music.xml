@@ -1,29 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MusicActivity">
 
-    <include
-        layout="@layout/toolbar_layout"/>
+    <include layout="@layout/toolbar_layout" />
 
     <android.support.v4.widget.DrawerLayout
+        android:id="@+id/navDrawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/navDrawer">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
-                android:textSize="30sp"
-                android:text="Music"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Music"
+                android:textSize="40sp" />
+
+            <Button
+                android:layout_gravity="center_horizontal"
+                android:onClick="playMusic"
+                android:text="Play Music"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="stopMusic"
+                android:text="Stop Music"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
@@ -32,8 +45,8 @@
             android:id="@+id/navView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:menu="@menu/nav_menu"
-            android:layout_gravity="start">
+            android:layout_gravity="start"
+            app:menu="@menu/nav_menu">
 
         </android.support.design.widget.NavigationView>
 

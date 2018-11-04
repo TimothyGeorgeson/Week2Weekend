@@ -21,12 +21,6 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/itemSkip"
-        android:icon="@drawable/skip"
-        android:title="Skip"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/itemReport"
         android:icon="@drawable/report"
         android:title="Report"
