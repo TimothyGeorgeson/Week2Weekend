@@ -1,8 +1,6 @@
-package com.example.consultants.week2weekend;
+package com.example.consultants.week2weekend.view;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -12,21 +10,19 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class ReportActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+import com.example.consultants.week2weekend.R;
 
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar myToolbar;
-    private TextView tvFactResult;
-    private TextView tvFibResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report);
+        setContentView(R.layout.activity_main);
         drawerLayout = findViewById(R.id.navDrawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -36,16 +32,6 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
         NavigationView navigationView = findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
         drawerToggle.syncState();
-
-        tvFactResult = findViewById(R.id.tvFactResult);
-        tvFibResult = findViewById(R.id.tvFibResult);
-
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
-        int highestFact = sharedPref.getInt("FactMax", 0);
-        int highestFib = sharedPref.getInt("FibMax", 0);
-
-        tvFactResult.setText(Integer.toString(highestFact));
-        tvFibResult.setText(Integer.toString(highestFib));
     }
 
     @Override

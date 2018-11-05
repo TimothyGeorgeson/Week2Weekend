@@ -1,8 +1,11 @@
-package com.example.consultants.week2weekend;
+package com.example.consultants.week2weekend.view;
 
+import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -13,22 +16,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.consultants.week2weekend.job.MyRunnable;
+import com.example.consultants.week2weekend.R;
 
-public class MusicActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class FibonacciActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar myToolbar;
-    private MediaPlayer mPlayer;
+    EditText etFib;
+    TextView tvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_music);
-
-        mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.frenchjazz);
-        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        setContentView(R.layout.activity_fibonacci);
+        etFib = findViewById(R.id.etFib);
+        tvResult = findViewById(R.id.tvResult);
 
         drawerLayout = findViewById(R.id.navDrawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -39,6 +47,54 @@ public class MusicActivity extends AppCompatActivity implements NavigationView.O
         NavigationView navigationView = findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
         drawerToggle.syncState();
+    }
+
+    public void calcFibonacci(View view) {
+        String input = etFib.getText().toString();
+        boolean containsNonInt = false;
+        for (int i = 0; i < input.length(); i++) {
+            if (!Character.isDigit(input.charAt(i)))
+            {
+                containsNonInt = true;
+                break;
+            }
+        }
+        if (containsNonInt)
+        {
+            Toast.makeText(this, "Enter integers only", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            //setting up HandlerThread
+            HandlerThread handlerThread = new HandlerThread("MyHandlerThread");
+            handlerThread.start();
+            Looper looper = handlerThread.getLooper();
+            Handler handler = new Handler(looper);
+            MyRunnable myRunnable = new MyRunnable(Integer.parseInt(input), handler);
+            handler.post(myRunnable);
+
+            int output = fibonacci(Integer.parseInt(input));
+            tvResult.setText(Integer.toString(output));
+
+            //saving highest fibonacci value into shared prefs
+            SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
+
+            int highestFib = sharedPref.getInt("FibMax", 0);
+            if(output > highestFib)
+            {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("FibMax", output);
+                editor.commit();
+            }
+        }
+
+    }
+
+    static int fibonacci(int n)
+    {
+        if (n <= 1)
+            return n;
+        return fibonacci(n-1) + fibonacci(n-2);
     }
 
     @Override
@@ -99,13 +155,4 @@ public class MusicActivity extends AppCompatActivity implements NavigationView.O
 
         return false;
     }
-
-    public void playMusic(View view) {
-        mPlayer.start();
-    }
-
-    public void stopMusic(View view) {
-        mPlayer.stop();
-    }
 }
-

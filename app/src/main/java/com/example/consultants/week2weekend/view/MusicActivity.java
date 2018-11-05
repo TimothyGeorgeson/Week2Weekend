@@ -1,9 +1,10 @@
-package com.example.consultants.week2weekend;
+package com.example.consultants.week2weekend.view;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,17 +12,26 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import com.example.consultants.week2weekend.R;
+
+
+public class MusicActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar myToolbar;
+    private MediaPlayer mPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_music);
+
+        mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.frenchjazz);
+        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
         drawerLayout = findViewById(R.id.navDrawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -91,4 +101,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return false;
     }
+
+    public void playMusic(View view) {
+        mPlayer.start();
+    }
+
+    public void stopMusic(View view) {
+        mPlayer.stop();
+    }
 }
+

@@ -1,4 +1,4 @@
-package com.example.consultants.week2weekend;
+package com.example.consultants.week2weekend.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.consultants.week2weekend.R;
 
 public class FactorialActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         LoaderManager.LoaderCallbacks<String> {

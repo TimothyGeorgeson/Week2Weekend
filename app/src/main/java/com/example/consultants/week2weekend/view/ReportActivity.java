@@ -1,4 +1,4 @@
-package com.example.consultants.week2weekend;
+package com.example.consultants.week2weekend.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,26 +12,23 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FibonacciActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+import com.example.consultants.week2weekend.R;
+
+public class ReportActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar myToolbar;
-    EditText etFib;
-    TextView tvResult;
+    private TextView tvFactResult;
+    private TextView tvFibResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fibonacci);
-        etFib = findViewById(R.id.etFib);
-        tvResult = findViewById(R.id.tvResult);
-
+        setContentView(R.layout.activity_report);
         drawerLayout = findViewById(R.id.navDrawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -41,46 +38,16 @@ public class FibonacciActivity extends AppCompatActivity implements NavigationVi
         NavigationView navigationView = findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
         drawerToggle.syncState();
-    }
 
-    public void calcFibonacci(View view) {
-        String input = etFib.getText().toString();
-        boolean containsNonInt = false;
-        for (int i = 0; i < input.length(); i++) {
-            if (!Character.isDigit(input.charAt(i)))
-            {
-                containsNonInt = true;
-                break;
-            }
-        }
-        if (containsNonInt)
-        {
-            Toast.makeText(this, "Enter integers only", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            int output = fibonacci(Integer.parseInt(input));
-            tvResult.setText(Integer.toString(output));
+        tvFactResult = findViewById(R.id.tvFactResult);
+        tvFibResult = findViewById(R.id.tvFibResult);
 
-            //saving highest factorial output to sharedpreferences within loader
-            SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
+        int highestFact = sharedPref.getInt("FactMax", 0);
+        int highestFib = sharedPref.getInt("FibMax", 0);
 
-            int highestFib = sharedPref.getInt("FibMax", 0);
-            if(output > highestFib)
-            {
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("FibMax", output);
-                editor.commit();
-            }
-        }
-
-    }
-
-    static int fibonacci(int n)
-    {
-        if (n <= 1)
-            return n;
-        return fibonacci(n-1) + fibonacci(n-2);
+        tvFactResult.setText(Integer.toString(highestFact));
+        tvFibResult.setText(Integer.toString(highestFib));
     }
 
     @Override
