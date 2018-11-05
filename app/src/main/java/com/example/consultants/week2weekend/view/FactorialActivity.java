@@ -130,7 +130,7 @@ public class FactorialActivity extends AppCompatActivity implements NavigationVi
                 startActivity(intent);
                 break;
             case R.id.quiz:
-                Toast.makeText(this, "This is quiz", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Quiz Not Yet Implemented", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.music:
                 intent = new Intent(getApplicationContext(), MusicActivity.class);
