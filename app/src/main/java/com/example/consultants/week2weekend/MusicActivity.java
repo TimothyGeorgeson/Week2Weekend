@@ -63,7 +63,7 @@ public class MusicActivity extends AppCompatActivity implements NavigationView.O
                 finish();
                 return true;
             case R.id.itemReport:
-                Toast.makeText(this, "Report", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, ReportActivity.class));
                 break;
             case R.id.itemFact:
                 startActivity(new Intent(this, FactorialActivity.class));

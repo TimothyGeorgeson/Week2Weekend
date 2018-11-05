@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".MusicActivity" />
         <activity android:name=".FactorialActivity" />
-        <activity android:name=".FibonacciActivity"></activity>
+        <activity android:name=".FibonacciActivity" />
+        <activity android:name=".ReportActivity"></activity>
     </application>
 
 </manifest>
