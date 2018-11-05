@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -20,16 +18,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.consultants.week2weekend.job.MyRunnable;
+import com.example.consultants.week2weekend.job.MyHandlerThread;
 import com.example.consultants.week2weekend.R;
 
-public class FibonacciActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class FibonacciActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar myToolbar;
     EditText etFib;
     TextView tvResult;
+    private MyHandlerThread handlerThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,48 +52,53 @@ public class FibonacciActivity extends AppCompatActivity implements NavigationVi
         String input = etFib.getText().toString();
         boolean containsNonInt = false;
         for (int i = 0; i < input.length(); i++) {
-            if (!Character.isDigit(input.charAt(i)))
-            {
+            if (!Character.isDigit(input.charAt(i))) {
                 containsNonInt = true;
                 break;
             }
         }
-        if (containsNonInt)
-        {
+        if (containsNonInt) {
             Toast.makeText(this, "Enter integers only", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+        } else {
             //setting up HandlerThread
-            HandlerThread handlerThread = new HandlerThread("MyHandlerThread");
+            handlerThread = new MyHandlerThread("MyHandlerThread");
+            //runnable that contains fibonacci task
+            Runnable task = new Runnable() {
+                @Override
+                public void run() {
+                    int output = fibonacci(Integer.parseInt(etFib.getText().toString()));
+                    tvResult.setText(Integer.toString(output));
+
+                    //saving highest fibonacci value into shared prefs
+                    SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
+
+                    int highestFib = sharedPref.getInt("FibMax", 0);
+                    if (output > highestFib) {
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt("FibMax", output);
+                        editor.commit();
+                    }
+                }
+            };
+
             handlerThread.start();
-            Looper looper = handlerThread.getLooper();
-            Handler handler = new Handler(looper);
-            MyRunnable myRunnable = new MyRunnable(Integer.parseInt(input), handler);
-            handler.post(myRunnable);
+            handlerThread.prepareHandler();
+            handlerThread.postTask(task);
+            handlerThread.postTask(task);
 
-            int output = fibonacci(Integer.parseInt(input));
-            tvResult.setText(Integer.toString(output));
-
-            //saving highest fibonacci value into shared prefs
-            SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
-
-            int highestFib = sharedPref.getInt("FibMax", 0);
-            if(output > highestFib)
-            {
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("FibMax", output);
-                editor.commit();
-            }
         }
-
     }
 
-    static int fibonacci(int n)
-    {
+    @Override
+    protected void onDestroy() {
+        handlerThread.quit();
+        super.onDestroy();
+    }
+
+    static int fibonacci(int n) {
         if (n <= 1)
             return n;
-        return fibonacci(n-1) + fibonacci(n-2);
+        return fibonacci(n - 1) + fibonacci(n - 2);
     }
 
     @Override
@@ -106,8 +110,7 @@ public class FibonacciActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item))
-        {
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
 
@@ -135,8 +138,7 @@ public class FibonacciActivity extends AppCompatActivity implements NavigationVi
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         Intent intent;
-        switch (menuItem.getItemId())
-        {
+        switch (menuItem.getItemId()) {
             case R.id.home:
                 intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
